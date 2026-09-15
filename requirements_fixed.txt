@@ -1,0 +1,8 @@
+streamlit
+pandas
+numpy<2.0
+plotly
+joblib
+scikit-learn==1.6.1
+xgboost
+torch
