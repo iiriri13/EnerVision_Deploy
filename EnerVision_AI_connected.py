@@ -509,8 +509,8 @@ st.markdown(
         background: #071d2d;
     }
     .main .block-container {
-        max-width: 1500px;
-        padding-top: 1.15rem;
+        max-width: 1450px;
+        padding-top: 1.0rem;
         padding-bottom: 2rem;
         padding-left: 2.2rem;
         padding-right: 2.2rem;
@@ -524,8 +524,8 @@ st.markdown(
         margin-bottom: 18px;
     }
     .ev-logo {
-        width: 70px;
-        height: 70px;
+        width: 68px;
+        height: 68px;
         background: #020b13;
         border-radius: 0;
         display: flex;
@@ -538,7 +538,7 @@ st.markdown(
         line-height: 1;
     }
     .ev-brand-title {
-        font-size: 40px;
+        font-size: 38px;
         font-weight: 700;
         color: #f4f7fb;
         letter-spacing: -1.2px;
@@ -547,7 +547,7 @@ st.markdown(
         color: #f6b71b;
     }
     .ev-subtitle {
-        font-size: 22px;
+        font-size: 18px;
         color: #f4f7fb;
         margin-top: 17px;
         font-weight: 600;
@@ -563,13 +563,22 @@ st.markdown(
         background: #0b263b;
         border: 1px solid #397da5;
         border-radius: 24px;
-        min-height: 96px;
+        min-height: 112px;
         padding: 18px 18px 14px;
         text-align: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
+    .top-condition-card {
+        min-height: 104px;
+        margin-top: 4px;
+    }
+    .side-metric-card {
+        min-height: 102px;
+        margin-bottom: 14px;
+    }
+
     .metric-label {
         color: #f3f6fa;
         font-size: 16px;
@@ -584,6 +593,7 @@ st.markdown(
     }
 
     .status-title {
+        padding-top: 32px;
         color: #f2f5f8;
         font-size: 16px;
         text-align: center;
@@ -609,7 +619,7 @@ st.markdown(
         font-weight: 500;
         text-align: center;
         margin-top: 16px;
-        margin-bottom: 16px;
+        margin-bottom: 30px;
     }
 
     /* Streamlit widget text */
@@ -638,26 +648,27 @@ st.markdown(
 # =========================================================
 # HEADER + DATE / TIME + CURRENT CONDITIONS
 # =========================================================
-st.markdown(
-    """
-    <div class="ev-header">
-        <div class="ev-logo">🏠</div>
-        <div class="ev-brand">
-            <div class="ev-brand-title">EnerVision <span>AI</span></div>
-            <div class="ev-subtitle">Smart Energy Forecasting</div>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-# Date/time and top condition cards
-top_left, top_date, top_time, top_weather, top_temp, top_humidity = st.columns(
-    [2.6, 1.45, 1.55, 1.25, 1.25, 1.25],
+# Keep everything in one horizontal header row, matching the reference layout.
+header_brand, header_date, header_time, header_weather, header_temp, header_humidity = st.columns(
+    [3.0, 1.45, 1.45, 1.12, 1.12, 1.12],
     gap="small",
 )
 
-with top_date:
+with header_brand:
+    st.markdown(
+        """
+        <div class="ev-header">
+            <div class="ev-logo">🏠</div>
+            <div class="ev-brand">
+                <div class="ev-brand-title">EnerVision <span>AI</span></div>
+                <div class="ev-subtitle">Smart Energy Forecasting</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+with header_date:
     st.markdown("**Date**")
     selected_date = st.date_input(
         "Date",
@@ -669,7 +680,7 @@ with top_date:
 
 day_data = df[df["time"].dt.date == selected_date].copy()
 
-with top_time:
+with header_time:
     default_time = (
         day_data["time"].iloc[0].time()
         if not day_data.empty
@@ -736,24 +747,25 @@ elif status == "Balance":
 else:
     action = "Trigger battery discharge reserves and initiate non-critical HVAC load shedding."
 
-with top_weather:
+# Fill the three condition cards in the same header row.
+with header_weather:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-label">Weather</div>'
+        f'<div class="metric-card top-condition-card"><div class="metric-label">Weather</div>'
         f'<div class="metric-value">{weather}</div></div>',
         unsafe_allow_html=True,
     )
 
-with top_temp:
+with header_temp:
     temp_text = f"{float(temperature):.2f}" if pd.notna(temperature) else "N/A"
     st.markdown(
-        f'<div class="metric-card"><div class="metric-label">Temperature</div>'
+        f'<div class="metric-card top-condition-card"><div class="metric-label">Temperature</div>'
         f'<div class="metric-value">{temp_text}</div></div>',
         unsafe_allow_html=True,
     )
 
-with top_humidity:
+with header_humidity:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-label">Humidity</div>'
+        f'<div class="metric-card top-condition-card"><div class="metric-label">Humidity</div>'
         f'<div class="metric-value">{humidity:.0f}%</div></div>',
         unsafe_allow_html=True,
     )
@@ -763,7 +775,7 @@ with top_humidity:
 # =========================================================
 selected_day_data = day_data
 
-left_main, center_main, right_main = st.columns([1.75, 1.45, 0.78], gap="medium")
+left_main, center_main, right_main = st.columns([2.30, 2.18, 1.00], gap="medium")
 
 with left_main:
     with st.container(border=True):
@@ -846,7 +858,7 @@ with right_main:
         ("Net Energy", f"{actual_net:.2f}"),
     ]:
         st.markdown(
-            f'<div class="metric-card" style="margin-bottom:14px;">'
+            f'<div class="metric-card side-metric-card">'
             f'<div class="metric-label">{label}</div>'
             f'<div class="metric-value">{value}</div></div>',
             unsafe_allow_html=True,
@@ -906,11 +918,7 @@ with left_chart:
             yaxis=dict(gridcolor="rgba(0,0,0,0)"),
         )
         fig_area.update_traces(textposition="outside")
-        st.plotly_chart(
-            fig_area,
-            use_container_width=True,
-            config={"displayModeBar": False},
-        )
+        st.plotly_chart(fig_area, use_container_width=True, config={"displayModeBar": False})
 
 with right_chart:
     with st.container(border=True):
@@ -1166,11 +1174,14 @@ st.caption(
 # =========================================================
 st.divider()
 st.header("🤖 AI Forecasting Models")
+
 xgb_model = XGB_FILE.exists() or XGB_PKL.exists()
 xgb_error = None if xgb_model else "XGBoost model file not found"
 lstm_model, lstm_error = load_bilstm()
 patch_model, patch_error = load_patch()
+
 m1, m2, m3 = st.columns(3)
+
 with m1:
     st.subheader("🌳 XGBoost")
     if XGB_FILE.exists() or XGB_PKL.exists():
@@ -1178,6 +1189,7 @@ with m1:
         st.caption("Runs in an isolated process")
     else:
         st.error("❌ Model file missing")
+
 with m2:
     st.subheader("🧠 Bi-LSTM")
     if lstm_model is not None:
@@ -1185,6 +1197,7 @@ with m2:
     else:
         st.error("❌ Not loaded")
         st.caption(lstm_error)
+
 with m3:
     st.subheader("📈 PatchTSMixer")
     if patch_model is not None:
@@ -1192,6 +1205,8 @@ with m3:
     else:
         st.error("❌ Not loaded")
         st.caption(patch_error)
+
+
 # =========================================================
 # MODEL SELECTION
 # =========================================================
@@ -1199,12 +1214,16 @@ selected_model = st.selectbox(
     "Select AI Model",
     ["XGBoost", "Bi-LSTM", "PatchTSMixer"],
 )
+
 st.caption(
     "The dataset is loaded automatically from HomeC_Cleaned.csv in the project folder."
 )
+
 if st.button("🔮 Run Prediction", use_container_width=True):
+
     FORECAST_HOURS = 24
     future_features, future_times = build_future_features(df, row, FORECAST_HOURS)
+
     if selected_model == "XGBoost":
         scaler_x, scaler_y, scaler_error = load_scalers()
         if scaler_error:
@@ -1222,6 +1241,7 @@ if st.button("🔮 Run Prediction", use_container_width=True):
             st.metric("XGBoost Next-Hour Prediction", f"{predictions[0]:.3f} kW")
             st.plotly_chart(px.line(forecast_df,x="Time",y="Predicted Net Energy (kW)",markers=True,title="XGBoost — Next 24 Hours"), use_container_width=True)
             st.dataframe(forecast_df,use_container_width=True,hide_index=True)
+
     elif selected_model == "Bi-LSTM":
         if lstm_model is None:
             st.error(f"Bi-LSTM is unavailable: {lstm_error}")
@@ -1262,6 +1282,7 @@ if st.button("🔮 Run Prediction", use_container_width=True):
         st.metric("Bi-LSTM Next-Hour Prediction",f"{forecast_values[0]:.3f} kW")
         st.plotly_chart(px.line(forecast_df,x="Time",y="Predicted Net Energy (kW)",markers=True,title="Bi-LSTM — Next 24 Hours"),use_container_width=True)
         st.dataframe(forecast_df,use_container_width=True,hide_index=True)
+
     else:
         if patch_model is None:
             st.error(f"PatchTSMixer is unavailable: {patch_error}")
@@ -1280,12 +1301,15 @@ if st.button("🔮 Run Prediction", use_container_width=True):
         st.metric("PatchTSMixer Next-Hour Prediction",f"{pred_values[0]:.3f} kW")
         st.plotly_chart(px.line(forecast_df,x="Time",y="Predicted Net Energy (kW)",markers=True,title="PatchTSMixer — Next 24 Hours"),use_container_width=True)
         st.dataframe(forecast_df,use_container_width=True,hide_index=True)
+
+
 # =========================================================
 # MODEL EVALUATION & EFFICIENCY
 # =========================================================
 st.divider()
 st.header("📊 Model Evaluation & Efficiency")
 st.caption("Evaluation summary for the three forecasting models. Efficiency is shown as an error-based score: 1 − MAE / mean(|actual|), clipped to 0–100%.")
+
 # These are the model evaluation values used in the project baseline.
 metric_df = pd.DataFrame({
     "Model": ["XGBoost", "Bi-LSTM", "PatchTSMixer"],
@@ -1299,6 +1323,7 @@ if mean_abs_actual > 1e-9:
     ).round(1)
 else:
     metric_df["Efficiency (%)"] = 0.0
+
 metric_df["Rank"] = metric_df["MAE (kW)"].rank(method="min").astype(int)
 metric_df = metric_df.sort_values("Rank").drop(columns="Rank")
 st.dataframe(
@@ -1306,16 +1331,20 @@ st.dataframe(
     use_container_width=True,
     hide_index=True,
 )
+
 ec1, ec2, ec3 = st.columns(3)
 for col, (_, r) in zip([ec1, ec2, ec3], metric_df.iterrows()):
     with col:
         st.metric(r["Model"], f"{r['Efficiency (%)']:.1f}% efficiency")
         st.caption(f"MAE {r['MAE (kW)']:.2f} kW • RMSE {r['RMSE (kW)']:.2f} kW")
+
+
 # =========================================================
 # MODEL COMPARISON
 # =========================================================
 st.divider()
 st.subheader("📊 Model Availability")
+
 comparison = pd.DataFrame(
     {
         "Model": ["XGBoost", "Bi-LSTM", "PatchTSMixer"],
@@ -1326,11 +1355,13 @@ comparison = pd.DataFrame(
         ],
     }
 )
+
 st.dataframe(
     comparison,
     use_container_width=True,
     hide_index=True,
 )
+
 st.caption(
     "⚡ EnerVision AI | Devlopers: Ahdab Albishri, Israa Alaryani, Norah Algethami and Reema Alamri."
 )
