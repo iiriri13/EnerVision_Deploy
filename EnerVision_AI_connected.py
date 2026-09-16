@@ -1159,35 +1159,6 @@ st.dataframe(
 st.caption(
     "⚡ EnerVision AI | Devlopers: Ahdab Albishri, Israa Alaryani, Norah Algethami and Reema Alamri."
 )
-).sort_values("Consumption", ascending=True)
-
-fig_area = px.bar(
-    area_df,
-    x="Consumption",
-    y="Area",
-    orientation="h",
-    title="Energy Consumption by Area",
-    labels={"Consumption": "Consumption (kW)", "Area": ""},
-    text_auto=".2f"
-)
-
-fig_area.update_layout(
-    height=330,
-    margin=dict(l=10, r=20, t=45, b=10),
-    showlegend=False,
-    plot_bgcolor="rgba(0,0,0,0)",
-    paper_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="white")
-)
-
-fig_area.update_traces(textposition="outside")
-
-st.plotly_chart(
-    fig_area,
-    use_container_width=True,
-    config={"displayModeBar": False}
-)
-
 
 # =========================================================
 # AI MODELS
