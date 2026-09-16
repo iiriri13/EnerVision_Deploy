@@ -24,7 +24,16 @@ st.set_page_config(
 
 BASE_DIR = Path(__file__).resolve().parent
 
-DATA_FILE = BASE_DIR / "HomeC_Cleaned.csv"
+# Find the dataset without changing the project content.
+# This supports Streamlit Cloud/repository layouts where the CSV may be
+# in the working directory or in a common data folder.
+DATA_CANDIDATES = [
+    BASE_DIR / "HomeC_Cleaned.csv",
+    Path.cwd() / "HomeC_Cleaned.csv",
+    BASE_DIR / "data" / "HomeC_Cleaned.csv",
+    BASE_DIR / "datasets" / "HomeC_Cleaned.csv",
+]
+DATA_FILE = next((p for p in DATA_CANDIDATES if p.exists()), BASE_DIR / "HomeC_Cleaned.csv")
 XGB_FILE = BASE_DIR / "xgboost_Ver2.joblib"
 XGB_PKL = BASE_DIR / "xgboost_Ver2.pkl"
 SCALER_X = BASE_DIR / "scaler_X.joblib"
@@ -444,10 +453,10 @@ def load_scalers():
 # =========================================================
 if not DATA_FILE.exists():
     st.error(
-        "HomeC_Cleaned.csv was not found in the same folder as this app.py."
+        "HomeC_Cleaned.csv was not found in the project files."
     )
     st.info(
-        "Keep HomeC_Cleaned.csv beside app.py. No dashboard upload is required."
+        "Place HomeC_Cleaned.csv in the same folder as this app.py (or in data/ or datasets/). No dashboard upload is required."
     )
     st.stop()
 
