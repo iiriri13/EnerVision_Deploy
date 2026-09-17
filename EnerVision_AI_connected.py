@@ -518,11 +518,11 @@ st.markdown(
         background: #071d2d;
     }
     .main .block-container {
-        max-width: 1450px;
-        padding-top: 1.0rem;
+        max-width: 1500px;
+        padding-top: 0.55rem;
         padding-bottom: 2rem;
-        padding-left: 2.2rem;
-        padding-right: 2.2rem;
+        padding-left: 2.0rem;
+        padding-right: 2.0rem;
     }
 
     /* Header */
@@ -547,7 +547,7 @@ st.markdown(
         line-height: 1;
     }
     .ev-brand-title {
-        font-size: 38px;
+        font-size: 40px;
         font-weight: 700;
         color: #f4f7fb;
         letter-spacing: -1.2px;
@@ -556,7 +556,7 @@ st.markdown(
         color: #f6b71b;
     }
     .ev-subtitle {
-        font-size: 18px;
+        font-size: 22px;
         color: #f4f7fb;
         margin-top: 17px;
         font-weight: 600;
@@ -572,7 +572,7 @@ st.markdown(
         background: #0b263b;
         border: 1px solid #397da5;
         border-radius: 24px;
-        min-height: 112px;
+        min-height: 96px;
         padding: 18px 18px 14px;
         text-align: center;
         display: flex;
@@ -580,11 +580,11 @@ st.markdown(
         justify-content: center;
     }
     .top-condition-card {
-        min-height: 104px;
+        min-height: 98px;
         margin-top: 4px;
     }
     .side-metric-card {
-        min-height: 102px;
+        min-height: 96px;
         margin-bottom: 14px;
     }
 
@@ -602,7 +602,7 @@ st.markdown(
     }
 
     .status-title {
-        padding-top: 32px;
+        padding-top: 38px;
         color: #f2f5f8;
         font-size: 16px;
         text-align: center;
@@ -620,11 +620,11 @@ st.markdown(
         font-size: 16px;
         font-weight: 700;
         text-align: center;
-        margin-top: 34px;
+        margin-top: 42px;
     }
     .action-value {
         color: #f4f7fb;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 500;
         text-align: center;
         margin-top: 16px;
@@ -659,7 +659,7 @@ st.markdown(
 # =========================================================
 # Keep everything in one horizontal header row, matching the reference layout.
 header_brand, header_date, header_time, header_weather, header_temp, header_humidity = st.columns(
-    [3.0, 1.45, 1.45, 1.12, 1.12, 1.12],
+    [2.30, 1.65, 1.65, 1.25, 1.25, 1.25],
     gap="small",
 )
 
@@ -784,7 +784,7 @@ with header_humidity:
 # =========================================================
 selected_day_data = day_data
 
-left_main, center_main, right_main = st.columns([2.30, 2.18, 1.00], gap="medium")
+left_main, center_main, right_main = st.columns([2.38, 2.25, 1.07], gap="medium")
 
 with left_main:
     with st.container(border=True):
@@ -845,14 +845,14 @@ with center_main:
                 plot_bgcolor="rgba(0,0,0,0)",
                 font=dict(color="white"),
                 legend=dict(font=dict(color="white")),
-                height=250,
+                height=205,
                 annotations=[
                     dict(
                         text=str(int(status_count["Count"].sum())),
                         x=0.5,
                         y=0.5,
                         showarrow=False,
-                        font=dict(size=24, color="white"),
+                        font=dict(size=22, color="white"),
                     )
                 ],
             )
@@ -917,7 +917,7 @@ with left_chart:
             text_auto=".2f",
         )
         fig_area.update_layout(
-            height=315,
+            height=305,
             margin=dict(l=5, r=35, t=8, b=5),
             showlegend=False,
             plot_bgcolor="rgba(0,0,0,0)",
@@ -961,7 +961,7 @@ with right_chart:
                 xaxis_title="Time",
                 yaxis_title="kW",
                 hovermode="x unified",
-                height=315,
+                height=305,
                 margin=dict(l=25, r=15, t=5, b=25),
                 paper_bgcolor="rgba(0,0,0,0)",
                 plot_bgcolor="rgba(0,0,0,0)",
